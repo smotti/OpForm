@@ -1,6 +1,5 @@
 module OpForm exposing (main)
 
-import Debug
 import Html exposing (Html, button, div, form, input, label, li, span, text, ul)
 import Html.App as App
 import Html.Attributes exposing (placeholder, style, type', value)
