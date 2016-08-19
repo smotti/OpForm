@@ -56,7 +56,7 @@ model =
 type Msg
   = InputName String
   | InputAddress String
-  | EditEntry Int
+  | EditEntry Entry
   | Save
   | Abort
 
@@ -78,12 +78,8 @@ update msg model =
       in
         { model | formEntry = Just <| setEntryAddress entry newAddr }
 
-    EditEntry id ->
-      let
-        entry =
-          getEntry model.entries id
-      in
-        { model | editingEntry = True, formEntry = entry}
+    EditEntry entry ->
+      { model | editingEntry = True, formEntry = Just entry}
 
     Save ->
       let
@@ -135,17 +131,6 @@ getFormEntry model =
   case model.formEntry of
     Just entry -> entry
     Nothing -> newEntry
-
-
-getEntry : List Entry -> Int -> Maybe Entry
-getEntry entries id =
-  let
-    filtered =
-      List.filter (\e -> e.id == id) entries
-  in
-    case List.head filtered of
-      Just entry -> Just entry
-      Nothing -> Nothing
 
 
 -- VIEW
@@ -204,5 +189,5 @@ viewEntry e =
   li []
     [ span [ style [("margin-right", "10px")] ] [ text e.name ]
     , span [ style [("margin-right", "10px")] ] [ text e.address ]
-    , button [ onClick <| EditEntry e.id ] [ text "Edit" ]
+    , button [ onClick <| EditEntry e ] [ text "Edit" ]
     ] 
